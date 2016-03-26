@@ -1,14 +1,6 @@
 function InitUITreeList(root) {
 
-	var list = getFileList(root,"*");
-	console.log(list);
-
-
-	var treedata=[];
-	for (var i = 0; i < list.length; i++) {
-		var item = { id:i+1, value:list[i] };
-		treedata.push(item); 
-	}
+	var treedata= getFileAll(root);
 
 	webix.protoUI({
     name:"edittree"
@@ -33,20 +25,64 @@ function InitUITreeList(root) {
 
     $$("onlineEditor").bind( $$("treeList"), "$data", function(obj, source){
         // console.log(source)
-        openEditor(obj.value);
+        openEditor(obj.parentPath,obj.value);
     }); 
 
 
-    console.log(smalltreedata)
+    console.log(treedata)
 }
 
+
+function getFileAll(root,parentId) {
+    var list = getFileList(root,"*");
+    console.log("getFileList",list);
+
+
+    var treedata=[];
+    for (var i = 0; i < list.length; i++) {
+        var id = ""+(i+1);
+        if (parentId) {
+            id = parentId+"."+id;
+        }
+        if ( list[i].name!="." && list[i].name!="..") {
+            var item = { id:id, value:list[i].name,parentPath:root };
+            treedata.push(item); 
+            //Dir 类型继续搜索
+            if (list[i].type=="dir" ) {
+
+                var subList = getFileAll(root+"/"+item.value,id);
+
+                if (subList.length>0) {
+                    item.data=subList;
+                }
+            }
+        }
+        
+       
+    }
+
+    return treedata;
+}
 
 function getFileList(root,filter) {
 	return LomoX.dir.entryList(root,filter)
 }
 
-function openEditor(path)
+function openEditor(path,fileName)
 {
-    // LomoX.file.readFileData(path);
-    LomoX.file.readFileData("/Users/colin3dmax/Work/openresty-ide/index.html");
+    console.log(path)
+
+    $$("openFilePath").setValue(fileName);
+    var fileData = LomoX.file.readFileData(path+"/"+fileName,"txt","utf-8");
+
+    // var value = fileData.replace(/\n  /g, "\n") + "\n";
+    console.log(typeof(fileData));
+
+    if (typeof(fileData)=="string") {
+        codeEditor.setValue(fileData);
+    }else{
+        // alert("目录不是文件");
+    }
+
+    
 }

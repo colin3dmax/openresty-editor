@@ -36,6 +36,7 @@ webix.ready(function(){
                     {   
                         rows:[
                                 {
+                                    id:"openFilePath",
                                     view:"label",
                                     align:"left",
                                     label:"file.txt",
@@ -113,7 +114,7 @@ webix.ready(function(){
         });
     frame.show();
 
-   InitUITreeList( "/" );
+   InitUITreeList( "/Users/colin3dmax/Work/lomox/build-LomoxTest-Desktop_Qt_5_5_1_clang_64bit-Debug/lomoxtest.app/Contents/MacOS/Resources" );
 
     // $$("onlineEditor").$view.onchange=function(){
     //     console.log("change")
