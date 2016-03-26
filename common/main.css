@@ -1,0 +1,22 @@
+body{
+	margin: 0 0;
+}
+#main_window{
+	height: 100%;
+	width: 100%;
+}
+#info{
+	height: 100px;
+	width: 200px;
+	background-color: green;
+	float: left;
+
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+}
+#onlineEditor{
+  height: auto;
+}
